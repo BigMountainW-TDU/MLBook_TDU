@@ -1,3 +1,7 @@
+## はじめに
+
+このリポジトリは，八谷大岳著「機械学習スタートアップシリーズ　ゼロからつくるPython機械学習プログラミング入門」のGitHubリポジトリ [https://github.com/hhachiya/MLBook](https://github.com/hhachiya/MLBook) を，東京電機大学・システムデザイン工学部「機械学習」講義用に修正，改訂したものです．
+
 ## ゼロからつくるPython機械学習プログラミング入門 
 <img src="https://raw.githubusercontent.com/hhachiya/MLBook/master/others/cover_img.jpg" width="100" align="left">
 機械学習スタートアップシリーズ　ゼロからつくるＰｙｔｈｏｎ機械学習プログラミング入門
