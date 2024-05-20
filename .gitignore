@@ -1,0 +1,8 @@
+.DS_Store
+.python-version
+results/*
+data/house-prices-advanced-regression-techniques
+data/MNIST/*.gz
+data/sentiment_labelled_sentences
+.ipynb_checkpoints
+__pycache__

@@ -2,6 +2,7 @@
 import numpy as np
 import cvxopt
 import matplotlib.pylab as plt
+import japanize_matplotlib
 
 # クラス
 class SVM():
@@ -18,7 +19,7 @@ class SVM():
         self.xDim = X.shape[1]  # 入力の次元数
         
         # サポートベクトルの閾値設定
-        self.spptThre = 0.1
+        self.spptThre = 1e-4
     #-------------------
 
     #-------------------
@@ -138,7 +139,7 @@ class SVM():
         if isLinePlot:
             x1 = np.arange(np.min(X[:,0]),np.max(X[:,0]),(np.max(X[:,0]) - np.min(X[:,0]))/100)
             x2 = -(x1*self.w[0]+self.b)/self.w[1]
-            plt.plot(x1,x2,'r-',label="f(x)")
+            plt.plot(x1,x2,'r-',label="f(x)=0")
 
         # 各軸の範囲、タイトルおよびラベルの設定
         plt.xlim([np.min(X[:,0]),np.max(X[:,0])])

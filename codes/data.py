@@ -13,8 +13,8 @@ from sklearn import datasets
 class unsupervised:
     #-------------------
     # パスの設定
-    def __init__(self):
-        self.path = "../data"
+    def __init__(self, path = '../data'):
+        self.path = path
     #-------------------
     #-------------------
     # データの作成
@@ -41,8 +41,8 @@ class unsupervised:
 class regression:
     #-------------------
     # パスの設定
-    def __init__(self):
-        self.path = "../data"
+    def __init__(self, path = '../data'):
+        self.path = path
     #-------------------
     
     #-------------------
@@ -83,8 +83,8 @@ class regression:
 class classification:
     #-------------------
     # パス、ラベルの設定
-    def __init__(self,negLabel=-1,posLabel=1):
-        self.path = "../data"
+    def __init__(self,negLabel=-1,posLabel=1, path = '../data'):
+        self.path = path
         self.negLabel = negLabel
         self.posLabel = posLabel
     #-------------------
@@ -120,7 +120,7 @@ class classification:
             dNum = 120
             np.random.seed(1)
             
-            cov = [[1,-0.6],[-0.6,1]]
+            cov = [[1.,-0.6],[-0.6,1.]]
             X = np.random.multivariate_normal([1,2],cov,int(dNum/2))
             X = np.concatenate([X,np.random.multivariate_normal([-2,-1],cov,int(dNum/2))],axis=0)
             Y = np.concatenate([self.negLabel*np.ones([int(dNum/2),1]),self.posLabel*np.ones([int(dNum/2),1])],axis=0)
@@ -231,8 +231,8 @@ class classification:
 class decisionTree:
     #-------------------
     # パス、ラベルの設定
-    def __init__(self):
-        self.path = "../data/decisionTree"
+    def __init__(self, path = "../data/decisionTree"):
+        self.path = path
     #-------------------
     
     #-------------------
@@ -260,8 +260,8 @@ class sentimentLabelling:
     
     #-------------------
     # パスの設定
-    def __init__(self):
-        self.path = '../data/sentiment_labelled_sentences'
+    def __init__(self, path = '../data/sentiment_labelled_sentences'):
+        self.path = path
     #-------------------
     
     #-------------------
