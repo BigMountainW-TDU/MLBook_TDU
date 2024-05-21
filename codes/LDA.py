@@ -43,16 +43,41 @@ class LDA():
     #-------------------
     # 3. 予測
     # X: 入力データ（データ数×次元数のnumpy.ndarray）
-    def predict(self,x):
-        return np.sign(np.matmul(x-self.m,self.w))
+    # method: 分類境界の計算方法
+    #     "mean": 全体平均
+    #     "midpoint": 各クラス平均の中点
+    #     "int_div_var": 各クラス平均間を分散で内分
+    #     "int_div_std": 各クラス平均間を標準偏差で内分
+    def predict(self,x,method='mean'):
+        self.b = 0
+
+        if method == 'midpoint':
+            self.m = (self.mNeg + self.mPos) / 2 # 各クラス平均ベクトルの中点
+            self.b = - np.matmul(self.m,self.w) / 2 # 
+        elif method == 'int_div_var' or method == 'int_div_std':
+            Xneg = self.Xneg - self.mNeg
+            Xpos = self.Xpos - self.mPos
+            Sneg = np.matmul(Xneg.T,Xneg)
+            Spos = np.matmul(Xpos.T,Xpos)
+            sigma_neg = float(self.w.T @ Sneg @ self.w) / Xneg.shape[0]
+            sigma_pos = float(self.w.T @ Spos @ self.w) / Xpos.shape[0]
+            if method == 'int_div_std':
+                sigma_neg = np.sqrt(sigma_neg)
+                sigma_pos = np.sqrt(sigma_pos)
+            
+            self.m = ((sigma_pos * self.mNeg) + (sigma_neg * self.mPos)) / (sigma_neg + sigma_pos)
+            
+        self.b = -np.matmul(self.m, self.w)
+
+        return np.sign(np.matmul(x,self.w)+self.b)
     #-------------------
     
     #-------------------
     # 4. 正解率の計算
     # X: 入力データ（データ数×次元数のnumpy.ndarray）
     # Y: 出力データ（データ数×１のnumpy.ndarray）
-    def accuracy(self,x,y):
-        return np.sum(self.predict(x)==y)/len(x)
+    def accuracy(self,x,y,method = 'mean'):
+        return np.sum(self.predict(x,method=method)==y)/len(x)
     #-------------------
     
     #-------------------
@@ -73,16 +98,16 @@ class LDA():
         X2 = (np.matmul(self.m,self.w)[0] - X1*self.w[0])/self.w[1]
 
         # データと線形モデルのプロット
-        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markerSize=14,label="カテゴリ-1")
-        plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markerSize=14,label="カテゴリ+1")
-        plt.plot(self.m[0,0],self.m[0,1],'ko',markerSize=12,label="全体の平均")
+        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markersize=14,label="カテゴリ-1")
+        plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="カテゴリ+1")
+        plt.plot(self.m[0,0],self.m[0,1],'ko',markersize=12,label="全体の平均")
         plt.plot(X1,X2,'r-',label="f(x)")
         
         # 各軸の範囲とラベルの設定
         plt.xlim([np.min(X[:,0]),np.max(X[:,0])])
         plt.ylim([np.min(X[:,1]),np.max(X[:,1])])
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         plt.legend()
 
         # グラフの表示またはファイルへの保存

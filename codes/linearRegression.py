@@ -103,8 +103,8 @@ class linearRegression():
         # 各軸の範囲とラベルの設定
         plt.ylim([0,np.max(Y)])
         plt.xlim([0,np.max(X)])
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         
         # グラフの表示またはファイルへの保存
         if len(fName):
