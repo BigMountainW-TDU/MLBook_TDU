@@ -2,6 +2,7 @@
 import numpy as np
 import logisticRegression as lr
 import data
+import japanize_matplotlib
 
 #-------------------
 # 1. データの作成

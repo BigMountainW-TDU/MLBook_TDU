@@ -43,7 +43,7 @@ class linearRegression():
         Z = np.concatenate([self.X,np.ones([self.dNum,1])],axis=1)
 
         # 分母の計算
-        ZZ = 1/self.dNum * np.matmul(Z.T,Z) + lamb * np.eye(self.xDim)
+        ZZ = 1/self.dNum * np.matmul(Z.T,Z) + lamb * np.eye(self.xDim+1)
 
         # 分子の計算
         ZY = 1/self.dNum * np.matmul(Z.T,self.Y)
@@ -103,8 +103,8 @@ class linearRegression():
         # 各軸の範囲とラベルの設定
         plt.ylim([0,np.max(Y)])
         plt.xlim([0,np.max(X)])
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         
         # グラフの表示またはファイルへの保存
         if len(fName):
