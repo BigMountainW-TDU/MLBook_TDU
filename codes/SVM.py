@@ -74,10 +74,14 @@ class SVM():
         # 凸二次計画法
         sol = cvxopt.solvers.qp(P,q,G,h,A,b)
         self.lamb = np.array(sol['x'])
+        print(self.lamb)
         # 'x'がlambdaに対応する
         
         # サポートベクトルのインデックス
+        self.spptInds1 = np.where(np.abs(C-self.lamb)<self.spptThre)[0]
+        print(self.spptInds1)
         self.spptInds = np.where(self.lamb>self.spptThre)[0]
+        print(self.spptInds)
         
         # wとbの計算
         self.w = np.matmul((self.lamb*self.Y).T,X).T
@@ -115,11 +119,13 @@ class SVM():
         plt.close()
         
         # 真値のプロット（クラスごとにマーカーを変更）
-        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markerSize=14,label="カテゴリ-1")
-        plt.plot(X[Y[:,0]== 1,0],X[Y[:,0]== 1,1],'m.',markerSize=14,label="カテゴリ+1")
+        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markersize=14,label="カテゴリ-1")
+        plt.plot(X[Y[:,0]== 1,0],X[Y[:,0]== 1,1],'m.',markersize=14,label="カテゴリ+1")
 
         # 予測値のメッシュの計算
-        X1,X2 = plt.meshgrid(plt.linspace(np.min(X[:,0]),np.max(X[:,0]),50),plt.linspace(np.min(X[:,1]),np.max(X[:,1]),50))
+        X1min, X1max = np.min(X[:,0])-1,np.max(X[:,0])+1
+        X2min, X2max = np.min(X[:,1])-1,np.max(X[:,1])+1
+        X1,X2 = plt.meshgrid(plt.linspace(X1min, X1max,50),plt.linspace(X2min, X2max,50))
         Xmesh = np.hstack([np.reshape(X1,[-1,1]),np.reshape(X2,[-1,1])])
         _,Ymesh = self.predict(Xmesh)
         Ymesh = np.reshape(Ymesh,X1.shape)
@@ -137,16 +143,20 @@ class SVM():
 
         # 直線のプロット
         if isLinePlot:
-            x1 = np.arange(np.min(X[:,0]),np.max(X[:,0]),(np.max(X[:,0]) - np.min(X[:,0]))/100)
+            x1 = np.arange(X1min,X1max,(X1max - X1min)/100)
             x2 = -(x1*self.w[0]+self.b)/self.w[1]
+            h1 = (1 -(x1*self.w[0]+self.b))/self.w[1]
+            h2 = (-1 -(x1*self.w[0]+self.b))/self.w[1]
             plt.plot(x1,x2,'r-',label="f(x)=0")
+            plt.plot(x1,h1,'b--',label="f(x)=1")
+            plt.plot(x1,h2,'g--',label="f(x)=-1")
 
         # 各軸の範囲、タイトルおよびラベルの設定
-        plt.xlim([np.min(X[:,0]),np.max(X[:,0])])
-        plt.ylim([np.min(X[:,1]),np.max(X[:,1])])
-        plt.title(title,fontSize=14)
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlim([np.min(X[:,0])-1,np.max(X[:,0])+1])
+        plt.ylim([np.min(X[:,1])-1,np.max(X[:,1])+1])
+        plt.title(title,fontsize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         plt.legend()
 
         # グラフの表示またはファイルへの保存
