@@ -2,6 +2,12 @@
 import numpy as np
 import matplotlib.pylab as plt
 
+no_japanize_matplotlib = False
+try:
+    import japanize_matplotlib
+except:
+    no_japanize_matplotlib = True
+
 # クラス
 class logisticRegression():
     #-------------------
@@ -93,8 +99,12 @@ class logisticRegression():
         P,_ = self.predict(X)
 
         # 真値と予測値のプロット
-        plt.plot(X,Y,'b.',label="真値")
-        plt.plot(X,P,'r.',label="予測")
+        if no_japanize_matplotlib:
+            plt.plot(X,Y,'b.',label="True Value")
+            plt.plot(X,P,'r.',label="Predicted Value")
+        else:
+            plt.plot(X,Y,'b.',label="真値")
+            plt.plot(X,P,'r.',label="予測値")
         
         # 各軸の範囲とラベルの設定
         plt.yticks([0,0.5,1])
@@ -125,8 +135,12 @@ class logisticRegression():
         plt.close()
         
         # 真値のプロット（クラスごとにマーカーを変更）
-        plt.plot(X[Y[:,0]==0,0],X[Y[:,0]==0,1],'cx',markersize=14,label="ラベル0")
-        plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="ラベル1")
+        if no_japanize_matplotlib:
+            plt.plot(X[Y[:,0]==0,0],X[Y[:,0]==0,1],'cx',markersize=14,label="category 0")
+            plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="category 1")
+        else:
+            plt.plot(X[Y[:,0]==0,0],X[Y[:,0]==0,1],'cx',markersize=14,label="ラベル0")
+            plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="ラベル1")
 
         # 予測値のメッシュの計算
         X1,X2 = plt.meshgrid(plt.linspace(np.min(X[:,0]),np.max(X[:,0]),50),plt.linspace(np.min(X[:,1]),np.max(X[:,1]),50))
@@ -162,16 +176,25 @@ class logisticRegression():
     # teEval: 評価の損失
     # yLabel: y軸のラベル（文字列）
     # fName: 画像の保存先（文字列）
-    def plotEval(self,trEval,teEval,ylabel="損失",fName=""):
+    def plotEval(self,trEval,teEval,ylabel="loss",fName=""):
         fig = plt.figure(figsize=(6,4),dpi=100)
         
         # 損失のプロット
-        plt.plot(trEval,'b',label="学習")
-        plt.plot(teEval,'r',label="評価")
+        if no_japanize_matplotlib:
+            plt.plot(trEval,'b',label="training")
+            plt.plot(teEval,'r',label="evaluation")
+        else:
+            plt.plot(trEval,'b',label="学習")
+            plt.plot(teEval,'r',label="評価")
         
         # 各軸の範囲とラベルの設定
-        plt.xlabel("反復",fontsize=14)
-        plt.ylabel(ylabel,fontsize=14)
+        if no_japanize_matplotlib:
+            plt.xlabel("iteration",fontsize=14)
+            plt.ylabel(ylabel,fontsize=14)
+        else:
+            plt.xlabel("反復",fontsize=14)
+            plt.ylabel("損失",fontsize=14)
+
         plt.ylim([0,1.1])
         plt.legend()
         

@@ -44,11 +44,11 @@ class PCA:
         import matplotlib.pylab as plt
         
         # 主成分得点のプロット
-        plt.plot(self.F[:,0],self.F[:,1],'k.',markerSize=14)
+        plt.plot(self.F[:,0],self.F[:,1],'k.',markersize=14)
         
         # 各軸の範囲とラベルの設定
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
 
         # グラフの表示またはファイルへの保存
         if len(fName):
@@ -84,10 +84,10 @@ class PCA:
         from mpl_toolkits.mplot3d import Axes3D
         
         fig = plt.figure()
-        ax = Axes3D(fig)
+        ax = fig.add_subplot(111,projection='3d')
         
         # 学習データのプロット
-        ax.plot(self.X[:,0],self.X[:,1],self.X[:,2],color="k",marker=".",linestyle='None',markerSize=14)
+        ax.plot(self.X[:,0],self.X[:,1],self.X[:,2],color="k",marker=".",linestyle='None',markersize=14)
         
         # 平面のプロット
         ax.plot_wireframe(XX,YY,ZZ,color="c")
@@ -95,9 +95,9 @@ class PCA:
         # 各軸の範囲とラベルの設定
         ax.invert_xaxis()
         ax.invert_yaxis()
-        ax.set_xlabel(xLabel,fontSize=14)
-        ax.set_ylabel(yLabel,fontSize=14)
-        ax.set_zlabel(zLabel,fontSize=14)
+        ax.set_xlabel(xLabel,fontsize=14)
+        ax.set_ylabel(yLabel,fontsize=14)
+        ax.set_zlabel(zLabel,fontsize=14)
 
         # グラフの表示またはファイルへの保存
         if len(fName):

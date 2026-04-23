@@ -5,6 +5,12 @@ import kernelSVM as svm
 import data
 import matplotlib.pylab as plt
 
+no_japanize_matplotlib = False
+try:
+    import japanize_matplotlib
+except:
+    no_japanize_matplotlib = True
+
 kernelType = 2
 
 #-------------------
@@ -86,9 +92,13 @@ print(f"選択したパラメータ:{selectedParam}")
 
 #-------------------
 # 3.75 正解率のプロット
-plt.plot(kernelParams,np.mean(accuracies,axis=1),'r-o',lineWidth=2)
-plt.xlabel("カーネルパラメータ",fontSize=14)
-plt.ylabel("推定した正解率",fontSize=14)
+plt.plot(kernelParams,np.mean(accuracies,axis=1),'r-o',linewidth=2)
+if no_japanize_matplotlib:
+    plt.xlabel("Kernel parameter",fontsize=14)
+    plt.ylabel("Estimated accuracy",fontsize=14)
+else:
+    plt.xlabel("カーネルパラメータ",fontsize=14)
+    plt.ylabel("推定した正解率",fontsize=14)
 plt.savefig(f"../results/kernelSVM_CV_{myData.dataType}_{kernelType}.pdf")
 #-------------------
 
@@ -111,8 +121,13 @@ print(f"評価データの正解率={myModel.accuracy(Xte,Yte):.2f}")
 
 #-------------------
 # 7. 真値と予測値のプロット
+if no_japanize_matplotlib:
+    title = f"Training accuracy: {myModel.accuracy(Xtr,Ytr):.2f}, Test accuracy: {myModel.accuracy(Xte,Yte):.2f}"
+else:
+    title = f"学習正解率：{myModel.accuracy(Xtr,Ytr):.2f},評価正解率：{myModel.accuracy(Xte,Yte):.2f}"
+
 myModel.plotModel2D(X=Xtr,Y=Ytr,xLabel=myData.xLabel,yLabel=myData.yLabel,
-    title=f"学習正解率：{myModel.accuracy(Xtr,Ytr):.2f},評価正解率：{myModel.accuracy(Xte,Yte):.2f}",
+    title=title,
     fName=f"../results/kernelSVM_result_{myData.dataType}_{myKernel.kernelType}_{str(myKernel.kernelParam).replace('.','')}.png",
     isLinePlot=False)
 #-------------------

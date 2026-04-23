@@ -2,6 +2,12 @@
 import numpy as np
 import matplotlib.pylab as plt
 
+no_japanize_matplotlib = False
+try:
+    import japanize_matplotlib
+except:
+    no_japanize_matplotlib = True
+
 class linearRegression():
     #-------------------
     # 1. 学習データの初期化
@@ -96,8 +102,12 @@ class linearRegression():
         Yplin = self.predict(Xlin)
 
         # データと線形モデルのプロット
-        plt.plot(X,Y,'.',label="データ")
-        plt.plot(Xlin,Yplin,'r',label="線形モデル")
+        if no_japanize_matplotlib:
+            plt.plot(X,Y,'b.',label="Data")
+            plt.plot(Xlin,Yplin,'r',label="Linear Model")
+        else:
+            plt.plot(X,Y,'.',label="データ")
+            plt.plot(Xlin,Yplin,'r',label="線形モデル")
         plt.legend()
         
         # 各軸の範囲とラベルの設定

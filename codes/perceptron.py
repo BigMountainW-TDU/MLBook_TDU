@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pylab as plt
-import japanize_matplotlib
+
+no_japanize_matplotlib = False
+try:
+    import japanize_matplotlib
+except:
+    no_japanize_matplotlib = True
 
 class perceptron():
     #-------------------
@@ -79,15 +84,19 @@ class perceptron():
         Yplin = self.predict(Xlin)
 
         # データと線形モデルのプロット
-        plt.plot(X,Y,'.',label="データ")
-        plt.plot(Xlin,Yplin,'r',label="線形モデル")
+        if no_japanize_matplotlib:
+            plt.plot(X,Y,'.',label="data")
+            plt.plot(Xlin,Yplin,'r',label="linear model")
+        else:
+            plt.plot(X,Y,'.',label="データ")
+            plt.plot(Xlin,Yplin,'r',label="線形モデル")
         plt.legend()
         
         # 各軸の範囲とラベルの設定
         plt.ylim([0,np.max(Y)])
         plt.xlim([0,np.max(X)])
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         
         # グラフの表示またはファイルへの保存
         if len(fName):
@@ -110,8 +119,12 @@ class perceptron():
         plt.close()
         
         # 真値のプロット（クラスごとにマーカーを変更）
-        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'bx',markerSize=14,label="ラベル-1")
-        plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markerSize=14,label="ラベル1")
+        if no_japanize_matplotlib:
+            plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'bx',markersize=14,label="label -1")
+            plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="label 1")
+        else:
+            plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'bx',markersize=14,label="ラベル-1")
+            plt.plot(X[Y[:,0]==1,0],X[Y[:,0]==1,1],'m.',markersize=14,label="ラベル1")
 
         # 予測値のメッシュの計算
         X1,X2 = plt.meshgrid(plt.linspace(np.min(X[:,0]),np.max(X[:,0]),100),plt.linspace(np.min(X[:,1]),np.max(X[:,1]),100))
@@ -127,9 +140,9 @@ class perceptron():
         plt.axis('square')
         plt.xlim([np.min(X[:,0]),np.max(X[:,0])])
         plt.ylim([np.min(X[:,1]),np.max(X[:,1])])
-        plt.title(title,fontSize=14)
-        plt.xlabel(xLabel,fontSize=14)
-        plt.ylabel(yLabel,fontSize=14)
+        plt.title(title,fontsize=14)
+        plt.xlabel(xLabel,fontsize=14)
+        plt.ylabel(yLabel,fontsize=14)
         plt.legend()
         
         # グラフの表示またはファイルへの保存

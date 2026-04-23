@@ -3,8 +3,11 @@ import numpy as np
 import cvxopt
 import cvxopt.solvers
 import matplotlib.pylab as plt
-import japanize_matplotlib
-
+no_japanize_matplotlib = False
+try:
+    import japanize_matplotlib
+except:
+    no_japanize_matplotlib = True
 
 # クラス
 class SVM():
@@ -94,8 +97,12 @@ class SVM():
         plt.close()
         
         # 真値のプロット（クラスごとにマーカーを変更）
-        plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markersize=14,label="カテゴリ-1")
-        plt.plot(X[Y[:,0]== 1,0],X[Y[:,0]== 1,1],'m.',markersize=14,label="カテゴリ+1")
+        if no_japanize_matplotlib:
+            plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markersize=14,label="category -1")
+            plt.plot(X[Y[:,0]== 1,0],X[Y[:,0]== 1,1],'m.',markersize=14,label="category +1")
+        else:
+            plt.plot(X[Y[:,0]==-1,0],X[Y[:,0]==-1,1],'cx',markersize=14,label="カテゴリ-1")
+            plt.plot(X[Y[:,0]== 1,0],X[Y[:,0]== 1,1],'m.',markersize=14,label="カテゴリ+1")
 
         # 予測値のメッシュの計算
         X1,X2 = plt.meshgrid(plt.linspace(np.min(X[:,0]),np.max(X[:,0]),50),plt.linspace(np.min(X[:,1]),np.max(X[:,1]),50))
@@ -104,16 +111,20 @@ class SVM():
         Ymesh = np.reshape(Ymesh,X1.shape)
 
         # contourプロット
-        CS = plt.contourf(X1,X2,Ymesh,linewidths=2,cmap="bwr",alpha=0.3,vmin=-5,vmax=5)
-        CC = plt.contour(X1,X2,Ymesh,colors=['green','red','blue'],levels=[-1.,0.,1.])
+        CS = plt.contourf(X1,X2,Ymesh,cmap="bwr",alpha=0.3,vmin=-5,vmax=5)
+        CC = plt.contour(X1,X2,Ymesh,linewidths=2,colors=['green','red','blue'],levels=[-1.,0.,1.])
 
         # カラーバー
         CB = plt.colorbar(CS)
         CB.ax.tick_params(labelsize=14)
         
         # サポートベクトルのプロット
+        if no_japanize_matplotlib:
+            label = "support vector"
+        else:
+            label = "サポートベクトル"
         if len(spptInds):
-            plt.plot(X[spptInds,0],X[spptInds,1],'o',color='none',markeredgecolor='r',markersize=18,markeredgewidth=3,label="サポートベクトル")
+            plt.plot(X[spptInds,0],X[spptInds,1],'o',color='none',markeredgecolor='r',markersize=18,markeredgewidth=3,label=label)
 
         # 直線のプロット
         if isLinePlot:

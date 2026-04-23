@@ -43,8 +43,8 @@ class housePriceData:
             # 各軸の範囲とラベルの設定
             ax.set_xlim([xrange[0],xrange[1]])
             ax.set_ylim([yrange[0],yrange[1]])
-            ax.set_xlabel('GrLivArea',fontSize=14)
-            ax.set_ylabel('SalePrice',fontSize=14)
+            ax.set_xlabel('GrLivArea',fontsize=14)
+            ax.set_ylabel('SalePrice',fontsize=14)
 
         plt.tight_layout() # グラフ間に隙間をあける
         plt.show() # グラフの表示
