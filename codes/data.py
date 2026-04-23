@@ -33,7 +33,7 @@ class unsupervised:
         elif dataType == 2:
             self.labels = ["GrLivArea","GarageArea","TotRmsAbvGrd"]
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[(data['MSSubClass']==30)|(data['MSSubClass']==60)][[self.labels[0],self.labels[1],self.labels[2]]].values
+            self.X = data[(data['MSSubClass']==30)|(data['MSSubClass']==60)][[self.labels[0],self.labels[1],self.labels[2]]].values.copy()
 ####################
 
 ####################
@@ -54,24 +54,24 @@ class regression:
         # 物件価格）説明変数:居住面積
         if dataType == 1:
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[data['MSSubClass']==60][['GrLivArea']].values
-            self.Y = data[data['MSSubClass']==60][['SalePrice']].values
+            self.X = data[data['MSSubClass']==60][['GrLivArea']].values.copy()
+            self.Y = data[data['MSSubClass']==60][['SalePrice']].values.copy()
             self.xLabel = "居住面積x[平方フィート]"
             self.yLabel = "物件価格y[ドル]" 
             
         # 物件価格）説明変数:居住面積,車庫面積,プール面積,ベッド部屋数,全部屋数
         elif dataType == 2:
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[data['MSSubClass']==60][['GrLivArea','GarageArea','PoolArea','BedroomAbvGr','TotRmsAbvGrd']].values
-            self.Y = data[data['MSSubClass']==60][['SalePrice']].values
+            self.X = data[data['MSSubClass']==60][['GrLivArea','GarageArea','PoolArea','BedroomAbvGr','TotRmsAbvGrd']].values.copy()
+            self.Y = data[data['MSSubClass']==60][['SalePrice']].values.copy()
             self.xLabel = ""
             self.yLabel = "物件価格y[ドル]"
             
         # 物件価格）説明変数:居住面積、物件価格に外れ値を追加
         elif dataType == 3:
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[data['MSSubClass']==60][['GrLivArea']].values
-            self.Y = data[data['MSSubClass']==60][['SalePrice']].values
+            self.X = data[data['MSSubClass']==60][['GrLivArea']].values.copy()
+            self.Y = data[data['MSSubClass']==60][['SalePrice']].values.copy()
             self.Y[self.Y>700000] -= 700000 # 外れ値
             self.xLabel = "居住面積x[平方フィート]"
             self.yLabel = "物件価格y[ドル]"
@@ -98,8 +98,8 @@ class classification:
         # 建物等級）説明変数:GrLivArea
         if dataType == 1:
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['GrLivArea']].values
-            self.Y = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['MSSubClass']].values
+            self.X = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['GrLivArea']].values.copy()
+            self.Y = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['MSSubClass']].values.copy()
             self.Y[self.Y==30] = self.negLabel
             self.Y[self.Y==60] = self.posLabel
             self.xLabel = "居住面積x[平方フィート]"
@@ -108,8 +108,8 @@ class classification:
         # 建物等級）説明変数:GrLivArea,GarageArea
         elif dataType == 2:
             data = pd.read_csv(os.path.join(self.path,"house-prices-advanced-regression-techniques/train.csv"))
-            self.X = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['GrLivArea','GarageArea']].values
-            self.Y = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['MSSubClass']].values
+            self.X = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['GrLivArea','GarageArea']].values.copy()
+            self.Y = data[(data['MSSubClass']==30) |(data['MSSubClass']==60)][['MSSubClass']].values.copy()
             self.Y[self.Y==30] = self.negLabel
             self.Y[self.Y==60] = self.posLabel
             self.xLabel = "居住面積x[平方フィート]"
@@ -250,7 +250,7 @@ class decisionTree:
             df = pd.read_csv(f'{self.path}/animals.csv')
 
         self.Xtr = df.drop('Y',axis=1)
-        self.Ytr = df[['Y']].values
+        self.Ytr = df[['Y']].values.copy()
     #-------------------
 ####################
 
@@ -280,7 +280,7 @@ class sentimentLabelling:
             fName = 'imdb_labelled.txt'
 
         # csvファイルの読み込み
-        data = pd.read_csv(os.path.join(self.path,fName),'\t',header=None)
+        data = pd.read_csv(os.path.join(self.path,fName),sep='\t',header=None)
 
         # データのインデックスをランダムにシャッフル
         dNum = len(data)
